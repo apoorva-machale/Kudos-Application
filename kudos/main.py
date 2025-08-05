@@ -4,6 +4,7 @@ from .schemas.schemas import KudosCreate, UserCreate, OrganizationCreate
 from .models import models
 from .models.models import User, Kudos, Organization
 from .crud.crud import give_kudos
+from .utils.generate_demo_data import generate_demo_data
 from .utils.auth import get_current_user
 from .utils.scheduler import start_scheduler
 from sqlmodel import SQLModel, Session
@@ -14,6 +15,11 @@ start_scheduler()
 
 app = FastAPI()
 
+@app.post("/generate-demo-data")
+def generate_data(session: Session = Depends(get_db)):
+    generate_demo_data(session)
+    return {"message": "Demo data generated successfully!"}
+
 @app.post("/organizations/")
 def create_org(org: OrganizationCreate, session: Session = Depends(get_db)):
     organization = Organization(name=org.name)
@@ -21,7 +27,6 @@ def create_org(org: OrganizationCreate, session: Session = Depends(get_db)):
     session.commit()
     session.refresh(organization)
     return organization
-
 
 @app.post("/users/")
 def create_user(user: UserCreate, session: Session = Depends(get_db)):
