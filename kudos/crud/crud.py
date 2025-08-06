@@ -1,5 +1,5 @@
 from sqlmodel import Session, select
-from ..models.models import User, Kudos
+from models.models import User, Kudos
 
 
 def give_kudos(session: Session, giver_id: int, receiver_id: int, message: str):

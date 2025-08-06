@@ -1,6 +1,6 @@
 from apscheduler.schedulers.background import BackgroundScheduler
-from ..database import get_db
-from ..crud.crud import reset_kudos_weekly
+from database import get_db
+from crud.crud import reset_kudos_weekly
 
 
 def start_scheduler():
