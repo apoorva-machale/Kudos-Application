@@ -1,5 +1,5 @@
 from sqlmodel import Session
-from kudos.models.models import Organization, User, Kudos
+from models.models import Organization, User, Kudos
 import random
 from datetime import datetime, timedelta
 from faker import Faker
