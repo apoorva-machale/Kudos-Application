@@ -1,21 +1,17 @@
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlmodel import SQLModel, Session, create_engine
 from dotenv import load_dotenv
 import os
 
+# Load environment variables
 load_dotenv()
 
 MYSQL_DATABASE_URL = os.getenv("MYSQL_DATABASE_URL")
-ALgorithm = os.getenv("ALGORITHM")
-print("Hello",MYSQL_DATABASE_URL,ALgorithm)
-engine = create_engine(MYSQL_DATABASE_URL,echo=True)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
+print("MYSQL_DATABASE_URL", MYSQL_DATABASE_URL)
 
+# Create the engine
+engine = create_engine(MYSQL_DATABASE_URL, echo=True)
+
+# Dependency for FastAPI routes
 def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+    with Session(engine) as session:
+        yield session

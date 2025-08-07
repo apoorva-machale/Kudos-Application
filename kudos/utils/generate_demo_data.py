@@ -39,6 +39,8 @@ def generate_demo_data(session: Session):
         for _ in range(random.randint(3, 5)):
             user = User(
                 username=faker.user_name(),
+                email=faker.email(),
+                password=faker.password(),
                 organization_id=org.id,
                 kudos_remaining=3
             )
