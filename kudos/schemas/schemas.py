@@ -17,10 +17,9 @@ class UserBase(BaseModel):
     )
     email: EmailStr
 
-
 class UserCreate(UserBase):
     password: str = Field(...,min_length=8, max_length=128)
-    org_id: int
+    org_name: str
 
     @field_validator('password')
     def validate_password(cls, value):
@@ -30,6 +29,13 @@ class UserCreate(UserBase):
             raise ValueError('Password must contain at least one letter')
         return value
 
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+    
+class LoginRequest(BaseModel):
+    username: str
+    password: str
 
 class UserRead(UserBase):
     id: int
@@ -64,12 +70,11 @@ class OrganizationRead(OrganizationBase):
 # ------------------------
 
 class KudosBase(BaseModel):
-    message: Optional[str] = None
+    message: str
 
-
-class KudosCreate(KudosBase):
-    receiver_id: int
-
+class KudosCreate(BaseModel):
+    receiver_username: str
+    message: str
 
 class KudosRead(KudosBase):
     id: int
