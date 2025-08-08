@@ -2,10 +2,7 @@ from pydantic import BaseModel, EmailStr, Field, field_validator
 from typing import Optional, List
 from datetime import datetime
 
-
-# ------------------------
 # User Schemas
-# ------------------------
 
 class UserBase(BaseModel):
     username: str = Field(
@@ -18,6 +15,7 @@ class UserBase(BaseModel):
     email: EmailStr
 
 class UserCreate(UserBase):
+    # User creation schema with password validation and org name
     password: str = Field(...,min_length=8, max_length=128)
     org_name: str
 

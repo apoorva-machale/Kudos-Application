@@ -1,3 +1,5 @@
+# Custom helper functions to raise common HTTP exceptions with standardized status codes and messages
+
 from fastapi import HTTPException, status
 
 def http_400(detail: str):

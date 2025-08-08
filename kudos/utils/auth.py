@@ -18,6 +18,7 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
     to_encode = data.copy()
     expire = datetime.now(timezone.utc) + settings.access_token_expires
     to_encode.update({"exp": expire})
+    # Encode token using SECRET_KEY and ALGORITHM from settings
     return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
 
 
@@ -28,6 +29,7 @@ def get_current_user(token: str = Depends(oauth2_scheme), session: Session = Dep
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
+        # Decode token and validate using SECRET_KEY and ALGORITHM
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         username: str = payload.get("sub")
         if username is None:
@@ -66,7 +68,7 @@ def create_default_admin(session: Session):
     if admin_exists:
         print("Admin user already exists. Skipping creation.")
         return
-    #
+
     # Create default organization (if needed)
     org = session.exec(select(Organization).where(Organization.name == "DefaultOrg")).first()
     if not org:
@@ -83,5 +85,6 @@ def create_default_admin(session: Session):
         organization_id=org.id
     )
     session.add(admin_user)
+    # Commit all changes to the database
     session.commit()
 
