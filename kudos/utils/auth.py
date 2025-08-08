@@ -1,25 +1,24 @@
 from fastapi import Depends, HTTPException, Header, status
 from sqlmodel import Session, select
+from sqlalchemy.orm import selectinload
 from database import get_db, engine
-from models.models import User
+from models.models import User, Kudos
 from jose import JWTError, jwt
 from datetime import datetime, timedelta, timezone
 from models.models import User, Organization, Role
 import os
+from passlib.hash import bcrypt
 from fastapi.security import OAuth2PasswordBearer
+from config.settings import settings
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
 
-ALGORITHM = os.getenv("ALGORITHM")
-SECRET_KEY = os.getenv("SECRET_KEY")
-
 def create_access_token(data: dict, expires_delta: timedelta = None):
     to_encode = data.copy()
-    print(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
-    expire = datetime.now(timezone.utc) + timedelta(minutes=int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")))
+    expire = datetime.now(timezone.utc) + settings.access_token_expires
     to_encode.update({"exp": expire})
-    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
 
 
 def get_current_user(token: str = Depends(oauth2_scheme), session: Session = Depends(get_db)) -> User:
@@ -29,20 +28,30 @@ def get_current_user(token: str = Depends(oauth2_scheme), session: Session = Dep
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         username: str = payload.get("sub")
         if username is None:
             raise credentials_exception
     except JWTError:
         raise credentials_exception
 
-    user = session.exec(select(User).where(User.username == username)).first()
+    statement = (
+        select(User)
+        .options(
+            selectinload(User.organization),  # eager-load organization
+            selectinload(User.received_kudos).selectinload(Kudos.giver)  # eager-load kudos giver
+        )
+        .where(User.username == username)
+    )
+
+    user = session.exec(statement).first()
+
     if user is None:
         raise credentials_exception
     return user
 
 def get_admin_user(current_user: User = Depends(get_current_user)):
-    if current_user.role != "admin":
+    if current_user.role != Role.admin:
         raise HTTPException(status_code=403, detail="Admin access only")
     return current_user
 
@@ -63,15 +72,16 @@ def create_default_admin(session: Session):
     if not org:
         org = Organization(name="DefaultOrg")
         session.add(org)
-        session.commit()
-        session.refresh(org)
+        session.flush() 
 
     # Create the admin user
     admin_user = User(
         username="admin",
-        password="admin123", 
+        password=bcrypt.hash("Admin123"), 
         email="admin@kudosapp.com",
-        role=Role.admin
+        role=Role.admin, 
+        organization_id=org.id
     )
     session.add(admin_user)
     session.commit()
+

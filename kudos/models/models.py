@@ -12,14 +12,14 @@ class Role(str, Enum):
 
 class Organization(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    name: str
+    name: str = Field(unique=True, min_length=1)
     users: List["User"] = Relationship(back_populates="organization")
     
 class User(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    username: str = Field(unique=True)
+    username: str = Field(index=True, unique=True, min_length=3, max_length=30)
     email: EmailStr = Field(unique=True)
-    password: str
+    password: str 
     role: Role = Field(default=Role.user)
     organization_id: Optional[int] = Field(default=None,foreign_key="organization.id")
     kudos_remaining: int = 3
