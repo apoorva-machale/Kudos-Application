@@ -21,8 +21,8 @@ This repository contains the **Kudos** application with a FastAPI backend connec
 
 Before starting, ensure you have the following installed:
 
-- [Python 3.8+](https://www.python.org/downloads/)
-- [Node.js (16+ recommended)](https://nodejs.org/)
+- [Python 3.12.1](https://www.python.org/downloads/)
+- [Node.js v21.5.0](https://nodejs.org/)
 - [MySQL Community Server](https://dev.mysql.com/downloads/mysql/)
 - `pip` and `npm` package managers
 - (Optional) A terminal or console with command line access (e.g., CMD, PowerShell, Terminal)
@@ -76,11 +76,12 @@ pip install -r requirements.txt
 4. **Set up environment variables**
 
 Create a `.env` file in the `kudos` folder (project root) with the following content:
-
+```
 MYSQL_DATABASE_URL="mysql+pymysql://<dbusername>:<db_password>@localhost:3306/kudos"
 ALGORITHM="HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 SECRET_KEY="your_jwt_key"
+```
 
 Replace `<dbusername>`, `<db_password>`, and `"your_jwt_key"` with your actual MySQL credentials and a secure secret key for JWT.
 
