@@ -6,7 +6,7 @@ export default function CreateUser() {
     username: '',
     email: '',
     password: '',
-    org_id: ''
+    org_name: ''
   });
 
   const handleChange = (e) => {
@@ -29,7 +29,7 @@ export default function CreateUser() {
       <input name="username" placeholder="Username" onChange={handleChange} required />
       <input name="email" type="email" placeholder="Email" onChange={handleChange} required />
       <input name="password" type="password" placeholder="Password" onChange={handleChange} required />
-      <input name="org_id" type="number" placeholder="Organization ID" onChange={handleChange} required />
+      <input name="org_name" placeholder="Organization Name" onChange={handleChange} required />
       <button type="submit">Create User</button>
     </form>
   );

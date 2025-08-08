@@ -4,8 +4,11 @@ import api from '../api';
 export default function GenerateDemoData() {
   const handleClick = async () => {
     try {
-      await api.post('/generate-demo-data');
-      alert('Demo data created');
+      await api.post('/generate-demo-data', {}, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
     } catch (err) {
       alert('Error: ' + err.message);
     }

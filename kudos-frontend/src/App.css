@@ -1,42 +1,83 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f9f9f9;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Navbar with baby pink background */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8c8dc; /* baby pink */
+  color: #333;
+  padding: 0.8rem 2rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.app-title {
+  margin: 0;
 }
 
-.card {
-  padding: 2em;
+.nav-links a {
+  color: #333;
+  margin-left: 1.5rem;
+  text-decoration: none;
+  font-weight: bold;
 }
 
-.read-the-docs {
-  color: #888;
+.nav-links a:hover {
+  text-decoration: underline;
+}
+
+
+/* Left Sidebar */
+.sidebar {
+  background: #fff;
+  padding: 1rem;
+  border-right: 1px solid #ddd;
+  overflow-y: auto;
+}
+
+section {
+  background: white;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 250px 2fr 1fr;
+  height: calc(100vh - 60px); /* adjust based on your header height */
+  width: 100vw; /* force full width */
+  margin: 0;
+  padding: 0;
+}
+
+.main-section,
+.right-sidebar {
+  min-width: 0; /* prevents them from pushing the grid wider than viewport */
+}
+
+button {
+  background-color: #add8e6; /* Light blue */
+  color:black;            
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #87ceeb; /* Slightly darker light blue on hover */
 }

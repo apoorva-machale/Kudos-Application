@@ -12,7 +12,7 @@ class Role(str, Enum):
 
 class Organization(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    name: str = Field(unique=True, min_length=1)
+    name: str = Field(min_length=1)
     users: List["User"] = Relationship(back_populates="organization")
     
 class User(SQLModel, table=True):

@@ -2,19 +2,19 @@ import React, { useState } from 'react';
 import api from '../api';
 
 export default function GiveKudos() {
-  const [receiverId, setReceiverId] = useState('');
+  const [receiverUsername, setReceiverUsername] = useState('');
   const [message, setMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post('/kudos/', {
-        receiver_id: parseInt(receiverId),
-        message,
+      await api.post('/kudos/', {
+        receiver_username: receiverUsername,
+        message
       });
       alert('Kudos sent!');
     } catch (err) {
-      alert('Error: ' + err.response.data.detail);
+      alert('Error: ' + err.response?.data?.detail || err.message);
     }
   };
 
@@ -22,10 +22,10 @@ export default function GiveKudos() {
     <form onSubmit={handleSubmit}>
       <h2>Give Kudos</h2>
       <input
-        type="number"
-        placeholder="Receiver ID"
-        value={receiverId}
-        onChange={(e) => setReceiverId(e.target.value)}
+        type="text"
+        placeholder="Receiver Username"
+        value={receiverUsername}
+        onChange={(e) => setReceiverUsername(e.target.value)}
         required
       />
       <input

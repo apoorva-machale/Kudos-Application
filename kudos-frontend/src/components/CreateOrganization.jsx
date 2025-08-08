@@ -10,8 +10,8 @@ export default function CreateOrganization() {
       const res = await api.post('/organizations/', { name });
       alert('Organization created: ' + res.data.name);
     } catch (err) {
-      alert('Error: ' + err.message);
-    }
+  alert('Error: ' + (err.response?.data?.detail || err.message));
+}
   };
 
   return (
