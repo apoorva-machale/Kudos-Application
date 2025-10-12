@@ -1,5 +1,6 @@
 from sqlmodel import SQLModel, Field, Relationship
 from typing import Optional, List
+from sqlalchemy import Column, Text
 from datetime import datetime
 
 
@@ -12,6 +13,8 @@ class Organization(SQLModel, table=True):
 class User(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     username: str
+    email: str
+    password: str
     organization_id: int = Field(foreign_key="organization.id")
     kudos_remaining: int = 3
     organization: Organization = Relationship(back_populates="users")
@@ -23,7 +26,10 @@ class Kudos(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     giver_id: int = Field(foreign_key="user.id")
     receiver_id: int = Field(foreign_key="user.id")
-    message: Optional[str] = None
+    message: Optional[str] = Field(
+        default=None,
+        sa_column=Column(Text)  # ← custom SQLAlchemy column type
+    )
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
     giver: User = Relationship(back_populates="given_kudos", sa_relationship_kwargs={"foreign_keys": "[Kudos.giver_id]"})

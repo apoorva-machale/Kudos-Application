@@ -1,5 +1,7 @@
 from sqlmodel import Session, select
 from ..models.models import User, Kudos
+from ..dependencies import refined_kudos_message
+import json
 
 
 def give_kudos(session: Session, giver_id: int, receiver_id: int, message: str):
@@ -15,7 +17,8 @@ def give_kudos(session: Session, giver_id: int, receiver_id: int, message: str):
     if giver.kudos_remaining <= 0:
         raise ValueError("No kudos left to give this week")
 
-    kudos = Kudos(giver_id=giver_id, receiver_id=receiver_id, message=message)
+    structured_kudos_message = refined_kudos_message(message)
+    kudos = Kudos(giver_id=giver_id, receiver_id=receiver_id, message=structured_kudos_message.json())
     session.add(kudos)
 
     giver.kudos_remaining -= 1

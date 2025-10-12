@@ -30,7 +30,7 @@ def create_org(org: OrganizationCreate, session: Session = Depends(get_db)):
 
 @router.post("/users/")
 def create_user(user: UserCreate, session: Session = Depends(get_db)):
-    db_user = User(username=user.username, organization_id=user.org_id)
+    db_user = User(username=user.username, email=user.email, password=user.password,organization_id=user.org_id)
     session.add(db_user)
     session.commit()
     session.refresh(db_user)
@@ -44,7 +44,8 @@ def give_kudos_api(
     session: Session = Depends(get_db),
 ):
     try:
-        kudos = give_kudos(session, current_user.id, kudos_data.receiver_id, kudos_data.message)
+        message = kudos_data.message.strip()
+        kudos = give_kudos(session, current_user.id, kudos_data.receiver_id, message)
         return kudos
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))

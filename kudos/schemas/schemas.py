@@ -64,13 +64,27 @@ class OrganizationRead(OrganizationBase):
 # ------------------------
 
 class KudosBase(BaseModel):
-    message: Optional[str] = None
+    message: str = Field(
+        ...,
+        description="The kudos message text. Can include newlines, quotes, and apostrophes.",
+        min_length=1
+    )
+
+    # Optional: strip whitespace and sanitize weird control characters
+    @field_validator("message")
+    def clean_message(cls, v):
+        return v.strip().replace("\r", "")  # remove carriage returns, keep \n
 
 
 class KudosCreate(KudosBase):
     receiver_id: int
 
-
+class KudosFormat(BaseModel):
+    bigwin: str
+    teamname: str
+    impact: str
+    growth: str
+    
 class KudosRead(KudosBase):
     id: int
     giver_id: int
