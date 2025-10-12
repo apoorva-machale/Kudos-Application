@@ -1,7 +1,6 @@
 from sqlmodel import Session, select
 from ..models.models import User, Kudos
 from ..dependencies import refined_kudos_message
-import json
 
 
 def give_kudos(session: Session, giver_id: int, receiver_id: int, message: str):
