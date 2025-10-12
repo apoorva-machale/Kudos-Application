@@ -86,8 +86,8 @@ SECRET_KEY="your_jwt_key"
 Replace `<dbusername>`, `<db_password>`, and `"your_jwt_key"` with your actual MySQL credentials and a secure secret key for JWT.
 
 5. **Run the backend server:**
-
-uvicorn main:app --reload
+From Kudos application folder
+uvicorn kudos.main:app --reload
 
 The server will start at `http://localhost:8000`
 
