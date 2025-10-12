@@ -18,18 +18,15 @@ class Organization(SQLModel, table=True):
     
 class User(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-<<<<<<< HEAD
     username: str
     email: str
     password: str
     organization_id: int = Field(foreign_key="organization.id")
-=======
     username: str = Field(index=True, unique=True, min_length=3, max_length=30)
     email: EmailStr = Field(unique=True)
     password: str 
     role: Role = Field(default=Role.user)
     organization_id: Optional[int] = Field(default=None,foreign_key="organization.id")
->>>>>>> 19079f91984fa1cd70a02278ab31b8d69e4a4356
     kudos_remaining: int = 3
     organization: "Organization" = Relationship(back_populates="users")
     given_kudos: List["Kudos"] = Relationship(back_populates="giver", sa_relationship_kwargs={"foreign_keys": "[Kudos.giver_id]"})

@@ -1,19 +1,19 @@
 from fastapi import FastAPI, Depends, APIRouter, HTTPException, status
-from database import engine, get_db
-from schemas.schemas import KudosCreate, UserCreate, OrganizationCreate, LoginRequest, Token
-from models import models
-from models.models import User, Kudos, Organization, Role
-from crud.crud import give_kudos
-from utils.generate_demo_data import generate_demo_data
-from utils.auth import get_current_user, get_admin_user, create_access_token
-from utils.scheduler import start_scheduler
+from ..database import engine, get_db
+from ..schemas.schemas import KudosCreate, UserCreate, OrganizationCreate, LoginRequest, Token
+
+from ..models.models import User, Kudos, Organization, Role
+from ..crud.crud import give_kudos
+from ..utils.generate_demo_data import generate_demo_data
+from ..utils.auth import get_current_user, get_admin_user, create_access_token
+from ..utils.scheduler import start_scheduler
 from sqlmodel import SQLModel, Session, select
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm
 from passlib.hash import bcrypt
 from starlette.middleware.cors import CORSMiddleware
-from utils.http_exceptions import http_401, http_500
-from utils.validators import (
+from ..utils.http_exceptions import http_401, http_500
+from ..utils.validators import (
     validate_username_unique,
     validate_org_exists,
     validate_not_self,

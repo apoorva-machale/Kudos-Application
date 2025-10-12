@@ -1,15 +1,14 @@
 from fastapi import Depends, HTTPException, Header, status
 from sqlmodel import Session, select
 from sqlalchemy.orm import selectinload
-from database import get_db, engine
-from models.models import User, Kudos
+from ..database import get_db, engine
 from jose import JWTError, jwt
 from datetime import datetime, timedelta, timezone
-from models.models import User, Organization, Role
+from ..models.models import User, Organization, Role, Kudos
 import os
 from passlib.hash import bcrypt
 from fastapi.security import OAuth2PasswordBearer
-from config.settings import settings
+from ..config.settings import settings
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")

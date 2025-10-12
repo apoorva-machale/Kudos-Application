@@ -1,20 +1,19 @@
 from fastapi import FastAPI, Depends, HTTPException
-from database import engine
-from schemas.schemas import KudosCreate, UserCreate, OrganizationCreate
-from models import models
-from models.models import User, Kudos, Organization
-from crud.crud import give_kudos
-from utils.generate_demo_data import generate_demo_data
-from utils.auth import get_current_user
-from utils.scheduler import start_scheduler
+from .database import engine
+from .schemas.schemas import KudosCreate, UserCreate, OrganizationCreate
+from .models import models
+from .models.models import User, Kudos, Organization
+from .crud.crud import give_kudos
+from .utils.generate_demo_data import generate_demo_data
+from .utils.auth import get_current_user, create_default_admin
+from .utils.scheduler import start_scheduler
 from sqlmodel import SQLModel, Session
-from routers import routes
+from .routers import routes
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from sqlmodel import Session
-from database import engine
-from utils.auth import create_default_admin
+
 
 SQLModel.metadata.create_all(bind=engine)
 

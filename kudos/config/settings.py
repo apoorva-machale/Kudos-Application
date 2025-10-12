@@ -2,7 +2,7 @@ from pydantic_settings import BaseSettings
 from datetime import timedelta
 
 class Settings(BaseSettings):
-    SECRET_KEY: str
+    OPENAI_API_KEY: str
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     MYSQL_DATABASE_URL: str
